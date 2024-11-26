@@ -89,7 +89,6 @@
                             <tr>
                                 <th>Sender</th>
                                 <th>Subject</th>
-                                <th>Snippet</th>
                                 <th>Date</th>
                                 <th>Priority</th>
                                 <th>Sentiment</th>
@@ -100,7 +99,6 @@
                             <tr>
                                 <td>{{ email.sender }}</td>
                                 <td>{{ email.subject }}</td>
-                                <td>{{ email.snippet }}</td>
                                 <td>{{ email.date }}</td>
                                 <td>
                                     <a href="{{ url_for('priority_view', priority=email.priority) }}" class="btn btn-link">
@@ -119,6 +117,7 @@
                     <h2>Email Detail</h2>
                     <p><strong>From:</strong> example@example.com</p>
                     <p><strong>Subject:</strong> Project Update</p>
+                    <p><strong>Summary</strong></p>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum.</p>
                     <h4>Attachments:</h4>
                     <ul>

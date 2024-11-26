@@ -1,20 +1,147 @@
-{% extends "base.html" %}
-{% block content %}
-<h2>Dashboard</h2>
-<table>
-    <tr>
-        <th>Sender</th>
-        <th>Subject</th>
-        <th>Priority</th>
-        <th>Sentiment</th>
-    </tr>
-    {% for email in emails %}
-    <tr>
-        <td>{{ email.sender }}</td>
-        <td><a href="/email/{{ email.id }}">{{ email.subject }}</a></td>
-        <td>{{ email.priority }}</td>
-        <td>{{ email.sentiment }}</td>
-    </tr>
-    {% endfor %}
-</table>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Side Panel -->
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                <div class="position-sticky">
+                    <h4 class="text-center py-3">Categories</h4>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">All Emails</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Categorized Emails</a>
+                        </li>
+                        <li class="nav-item">
+                            <ul class="list-unstyled ms-3">
+                                <li><a class="nav-link" href="#">Finance</a></li>
+                                <li><a class="nav-link" href="#">HR</a></li>
+                                <li><a class="nav-link" href="#">Technical</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <hr>
+                    <h4 class="text-center py-3">Filters</h4>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Unread Emails</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Flagged Messages</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Follow-Ups</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <!-- Header Section -->
+                <header class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                    <div class="d-flex align-items-center">
+                        <img src="{{ user.profile_picture }}" alt="Profile Picture" class="rounded-circle me-2" style="width: 50px; height: 50px;">
+                        <div>
+                            <h4>{{ user.name }}</h4>
+                            <p class="mb-0 text-muted">{{ user.role }}</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <input type="text" class="form-control me-2" placeholder="Search emails...">
+                        <button class="btn btn-primary">Search</button>
+                    </div>
+                    <div>
+                        <button class="btn btn-secondary me-2">Compose</button>
+                        <button class="btn btn-secondary me-2">Switch Account</button>
+                        <button class="btn btn-secondary">Notifications</button>
+                    </div>
+                </header>
+
+                <!-- Email List Section -->
+                <div class="mt-4">
+                    <h2>Email List</h2>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <label for="sort" class="form-label">Sort by:</label>
+                            <select id="sort" class="form-select">
+                                <option>Date</option>
+                                <option>Priority</option>
+                                <option>Sentiment</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button class="btn btn-info">Apply Filters</button>
+                        </div>
+                    </div>
+                    <table class="table table-hover mt-3">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Sender</th>
+                                <th>Subject</th>
+                                <th>Snippet</th>
+                                <th>Date</th>
+                                <th>Priority</th>
+                                <th>Sentiment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for email in emails %}
+                            <tr>
+                                <td>{{ email.sender }}</td>
+                                <td>{{ email.subject }}</td>
+                                <td>{{ email.snippet }}</td>
+                                <td>{{ email.date }}</td>
+                                <td>
+                                    <a href="{{ url_for('priority_view', priority=email.priority) }}" class="btn btn-link">
+                                        {{ email.priority }}
+                                    </a>
+                                </td>
+                                <td>{{ email.sentiment }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Email Detail View -->
+                <div id="email-detail" class="mt-4">
+                    <h2>Email Detail</h2>
+                    <p><strong>From:</strong> example@example.com</p>
+                    <p><strong>Subject:</strong> Project Update</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum.</p>
+                    <h4>Attachments:</h4>
+                    <ul>
+                        <li><a href="#">Attachment1.pdf</a></li>
+                        <li><a href="#">Attachment2.docx</a></li>
+                    </ul>
+                    <h4>Response Suggestions:</h4>
+                    <textarea class="form-control mb-2" placeholder="Type your response here..."></textarea>
+                    <div>
+                        <label for="tone" class="form-label">Tone:</label>
+                        <select id="tone" class="form-select">
+                            <option>Formal</option>
+                            <option>Neutral</option>
+                            <option>Casual</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-success mt-2">Send Response</button>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

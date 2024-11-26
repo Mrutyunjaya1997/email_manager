@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Email Details</h2>
+<p><strong>Sender:</strong> {{ email.sender }}</p>
+<p><strong>Subject:</strong> {{ email.subject }}</p>
+<p><strong>Body:</strong> {{ email.body }}</p>
+<h3>Suggested Responses</h3>
+<ul>
+    <li>Response 1: Thank you for your email. I'll review it shortly.</li>
+    <li>Response 2: Please clarify the deadline for this task.</li>
+    <li>Response 3: Noted. I’ll get back to you.</li>
+</ul>
+{% endblock %}
